@@ -1,0 +1,316 @@
+<!DOCTYPE html> 
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda de Ropa Gotica</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+
+
+    <header>
+        <div class="logo">
+            <h1>Tienda de Ropa</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">Inicio</a></li>
+                <li><a href="#">Colecciones</a></li>
+                <li><a href="#">Ofertas</a></li>
+                <li><a href="#">Contacto</a></li>
+            </ul>
+        </nav>
+        <div class="social-media">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+        <div class="search-bar">
+            <input type="text" id="search" placeholder="Buscar productos...">
+            <button onclick="searchProduct()">Buscar</button>
+        </div>
+    </header>
+
+   
+    <section class="product-section">
+        <h2>Productos Disponibles</h2>
+        <div class="product-container" id="product-container">
+            
+        </div>
+    </section>
+
+    
+    <div class="cart">
+        <button onclick="toggleCart()">
+            <i class="fas fa-shopping-cart"></i> 
+            <span id="cart-count">(0)</span> 
+        </button>
+        <div id="cart-details" style="display: none;">
+            <h3>Carrito de Compras</h3>
+            <ul id="cart-items">
+            </ul>
+            <button onclick="checkout()">Finalizar Compra</button>
+        </div>
+    </div>
+
+</body>
+</html>
+<style> 
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    opacity: 0;
+    animation: fadeIn 1s forwards;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transform: translateY(-50px);
+    animation: slideIn 1s forwards;
+}
+
+header .logo h1 {
+    margin: 0;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+.social-media a {
+    color: white;
+    margin-left: 10px;
+}
+
+.search-bar input {
+    padding: 5px;
+}
+
+.search-bar button {
+    padding: 5px;
+    background-color: #8345d4;
+    color: white;
+    border: none;
+}
+
+.product-section {
+    margin: 30px;
+    opacity: 0;
+    animation: fadeInUp 1s forwards;
+}
+
+.product-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.product-container .product {
+    background-color: white;
+    padding: 15px;
+    margin: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 200px;
+    text-align: center;
+    transform: translateY(50px);
+    animation: slideUp 1s forwards;
+}
+
+.product img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.product h3 {
+    margin: 10px 0;
+}
+
+.product button {
+    padding: 10px;
+    background-color: #8345d4;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.product button:hover {
+    background-color: #e77dcd;
+}
+
+.cart {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.cart:hover {
+    transform: translateY(-10px);
+}
+
+#cart-details {
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    to {
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideUp {
+    to {
+        transform: translateY(0);
+    }
+}
+
+.product button.added {
+    animation: bounce 0.3s ease-out;
+}
+
+.cart button {
+    background-color: #000000;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.cart button i {
+    font-size: 20px; 
+    margin-right: 10px; 
+}
+
+.cart button span {
+    font-size: 14px; 
+}
+
+.cart button:hover {
+    background-color: #010111; 
+}
+
+@keyframes bounce {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}  
+
+
+</style>
+
+<script>
+    const products = [
+    { id: 1, name: 'Chomba Unisex', price: 20000,img: 'https://http2.mlstatic.com/D_781579-MLA78293886273_082024-O.jpg' },
+    { id: 2, name: 'Pantalón a cuadros Unisex', price: 40000,img: 'https://camisetasbailongas.com/wp-content/uploads/2023/10/pantalon-cuadro-verde-frontal.jpg' },
+    { id: 3, name: 'Campera Gótica hombre', price: 60000,img: 'https://ae-pic-a1.aliexpress-media.com/kf/Sa3de29a9e92a4ed588dce4286cf93e95l.jpg'},
+    { id: 4, name: 'Vestido Gótico', price: 80000,img: 'https://m.media-amazon.com/images/I/61xRlxSY39L._AC_UL1500_.jpg'},  
+   
+];
+
+let cart = [];
+document.addEventListener("DOMContentLoaded", renderProducts);
+
+function renderProducts() {
+    const productContainer = document.getElementById('product-container');
+    productContainer.innerHTML = '';
+    
+    products.forEach(product => {
+        const productDiv = document.createElement('div');
+        productDiv.classList.add('product');
+        productDiv.id = `product-${product.id}`;
+        
+        productDiv.innerHTML = `
+            <img src="${product.img}" alt="${product.name}">
+            <h3>${product.name}</h3>
+            <p>$${product.price}</p>
+            <button onclick="addToCart(${product.id})">Añadir al Carrito</button>
+        `;
+        
+        productContainer.appendChild(productDiv);
+    });
+}
+
+function addToCart(productId) {
+    const product = products.find(p => p.id === productId);
+    cart.push(product);
+    updateCart();
+
+   
+    const productButton = document.querySelector(`#product-${productId} button`);
+    productButton.classList.add('added');
+    setTimeout(() => {
+        productButton.classList.remove('added');
+    }, 300);
+}
+
+function updateCart() {
+    const cartItems = document.getElementById('cart-items');
+    const cartButton = document.querySelector('.cart button');
+    cartItems.innerHTML = '';
+    
+    cart.forEach(item => {
+        const listItem = document.createElement('li');
+        listItem.textContent = `${item.name} - $${item.price}`;
+        cartItems.appendChild(listItem);
+    });
+    
+    cartButton.textContent = `Ver Carrito (${cart.length})`;
+}
+
+function toggleCart() {
+    const cartDetails = document.getElementById('cart-details');
+    cartDetails.style
+}
+</script>
+
+
